@@ -8,12 +8,7 @@ app.use(express.json())
 app.listen(5000)
 
 const usuarios = []
-const tweet = [
-    {
-        username: "bobesponja",
-        tweet: "Eu amo hambúrguer de siri!"
-    }
-]
+const tweet =[]
 
 app.get("/tweets" , (req, res) =>{
     res.send([
@@ -27,6 +22,11 @@ app.get("/tweets" , (req, res) =>{
 
 app.post("/sign-up" , (req, res) => {
     const {username , avatar} = req.body
+    if(!username || username === ""|| typeof username !== "string" || !avatar || avatar === "" || typeof avatar !== "string"){
+        res.sendStatus(400)
+        return 
+    }
+
     const newUser = {
         username,
         avatar
