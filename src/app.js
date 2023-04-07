@@ -55,3 +55,18 @@ app.get("/tweets" , (req, res) => {
     res.send(userAtual.slice(-10))
 })
 
+
+//bonus
+app.get("/tweets/:username" , (req, res) =>{
+    const {username} = req.params
+
+    const tweetsDoUsuario = tweets.filter((t) => {
+
+        if(t.username.toLowerCase() === username.toLowerCase()){
+            const usuario = usuarios.find((u)=> u.username === t.username)
+            return {...t, avatar: usuario.avatar}
+        }
+    })
+
+    res.send(tweetsDoUsuario)
+})
