@@ -8,7 +8,7 @@ app.use(express.json())
 app.listen(5000)
 
 const usuarios = []
-const tweet =[]
+const tweets =[]
 
 app.get("/tweets" , (req, res) =>{
     res.send([
@@ -18,6 +18,17 @@ app.get("/tweets" , (req, res) =>{
             tweet: "Eu amo hambúrguer de siri!"
         }
     ])
+})
+
+app.post("/tweets" , (req , res)=>{
+    const {username , tweet} = req.body
+    if(usuarios.filter((u)=> u.username !== username)){
+        return res.send("UNAUTHORIZED")
+    }
+
+    const newTweet = {username , tweet}
+    tweets.push(newTweet)
+    res.send("OK")
 })
 
 app.post("/sign-up" , (req, res) => {
