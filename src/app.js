@@ -22,7 +22,7 @@ app.post("/sign-up" , (req, res) => {
         avatar
     }
     usuarios.push(newUser)
-    res.send(usuarios)
+    res.status(201).send("OK")
 })
 
 app.post("/tweets" , (req , res)=>{
@@ -34,12 +34,12 @@ app.post("/tweets" , (req , res)=>{
     }
 
     if(!usuarioCadastrado){
-        return res.send("UNAUTHORIZED")
+        return res.status(401).send("UNAUTHORIZED")
     }
 
     const newTweet = {username , tweet}
     tweets.push(newTweet)
-    res.send("OK")
+    res.status(201).send("OK")
 })
 
 
