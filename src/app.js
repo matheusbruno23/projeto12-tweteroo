@@ -26,7 +26,9 @@ app.post("/sign-up" , (req, res) => {
 })
 
 app.post("/tweets" , (req , res)=>{
-    const {username , tweet} = req.body
+    const {tweet} = req.body
+    const {username} = req.headers
+    
     const usuarioCadastrado = usuarios.find(cadastro => cadastro.username === username)
     if(!username || username === ""|| typeof username !== "string" || !tweet || tweet === "" || typeof tweet !== "string"){
         res.sendStatus(400)
