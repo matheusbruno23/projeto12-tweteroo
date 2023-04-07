@@ -10,27 +10,6 @@ app.listen(5000)
 const usuarios = []
 const tweets =[]
 
-app.get("/tweets" , (req, res) =>{
-    res.send([
-        {
-            username: "bobesponja",
-            avatar: "https://cdn.shopify.com/s/files/1/0150/0643/3380/files/Screen_Shot_2019-07-01_at_11.35.42_AM_370x230@2x.png",
-            tweet: "Eu amo hambúrguer de siri!"
-        }
-    ])
-})
-
-app.post("/tweets" , (req , res)=>{
-    const {username , tweet} = req.body
-    if(usuarios.filter((u)=> u.username !== username)){
-        return res.send("UNAUTHORIZED")
-    }
-
-    const newTweet = {username , tweet}
-    tweets.push(newTweet)
-    res.send("OK")
-})
-
 app.post("/sign-up" , (req, res) => {
     const {username , avatar} = req.body
     if(!username || username === ""|| typeof username !== "string" || !avatar || avatar === "" || typeof avatar !== "string"){
@@ -43,10 +22,36 @@ app.post("/sign-up" , (req, res) => {
         avatar
     }
     usuarios.push(newUser)
-    console.log(req.body)
+    res.send(usuarios)
+})
+
+app.post("/tweets" , (req , res)=>{
+    const {username , tweet} = req.body
+    const usuarioCadastrado = usuarios.find(cadastro => cadastro.username === username)
+    if(!username || username === ""|| typeof username !== "string" || !tweet || tweet === "" || typeof tweet !== "string"){
+        res.sendStatus(400)
+        return 
+    }
+
+    if(!usuarioCadastrado){
+        return res.send("UNAUTHORIZED")
+    }
+
+    const newTweet = {username , tweet}
+    tweets.push(newTweet)
     res.send("OK")
 })
 
-app.post("/tweets" , (req , res)=> {
 
+app.get("/tweets" , (req, res) => {
+    // const {username , tweet} = req.params
+
+    const userAtual = tweets.map((t) => {
+        const userAv = usuarios.find((i) => i.username === t.username)
+        return {username:t.username , tweet: t.tweet, avatar: userAv.avatar}
+    })
+    const avatar = userAtual.avatar
+
+    res.send(userAtual.slice(-10))
 })
+
